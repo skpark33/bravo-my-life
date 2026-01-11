@@ -21,13 +21,13 @@ class LifeGridItem extends StatelessWidget {
   Color _getBackgroundColor(BuildContext context) {
     if (lifeYear?.score != null) {
       switch (lifeYear!.score) {
-        case 1: return Colors.green[900]!;
-        case 2: return Colors.green[600]!;
-        case 3: return Colors.green[300]!;
+        case 7: return Colors.green[900]!;
+        case 6: return Colors.green[600]!;
+        case 5: return Colors.green[300]!;
         case 4: return Colors.white;
-        case 5: return Colors.red[200]!;
-        case 6: return Colors.red[500]!;
-        case 7: return Colors.red[900]!;
+        case 3: return Colors.red[200]!;
+        case 2: return Colors.red[500]!;
+        case 1: return Colors.red[900]!;
       }
     }
     
@@ -42,7 +42,7 @@ class LifeGridItem extends StatelessWidget {
 
   Color _getTextColor() {
     if (lifeYear?.score != null) {
-      if (lifeYear!.score == 1 || lifeYear!.score == 7) {
+      if (lifeYear!.score == 7 || lifeYear!.score == 1) {
         return Colors.white;
       }
     }

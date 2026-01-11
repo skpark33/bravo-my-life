@@ -22,8 +22,8 @@ class LifeGraphScreen extends StatelessWidget {
 
     lifeData.years.forEach((year, data) {
       if (data.score != null) {
-        // Y = 8 - score. (1->7, 7->1)
-        spots.add(FlSpot(year.toDouble(), (8 - data.score!).toDouble()));
+        // Y = score. (1->1, 7->7)
+        spots.add(FlSpot(year.toDouble(), data.score!.toDouble()));
         if (year > maxYear) maxYear = year;
       }
     });
@@ -73,10 +73,8 @@ class LifeGraphScreen extends StatelessWidget {
                         showTitles: true,
                         interval: 1,
                         getTitlesWidget: (value, meta) {
-                          // Map back to labels?
-                          // Value 7 -> Best (1)
-                          // Value 1 -> Worst (7)
-                          int score = 8 - value.toInt();
+                          // Value is directly expectation score
+                          int score = value.toInt();
                           return Text(score.toString());
                         },
                       ),

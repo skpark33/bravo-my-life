@@ -107,7 +107,34 @@ class _YearDetailDialogState extends State<YearDetailDialog> {
     Navigator.of(context).pop();
   }
 
+  String _getScoreDescription(int score, AppLocalizations l10n) {
+    switch (score) {
+      case 7: return l10n.bestYear;
+      case 6: return l10n.greatYear;
+      case 5: return l10n.goodYear;
+      case 4: return l10n.averageYear;
+      case 3: return l10n.badYear;
+      case 2: return l10n.veryBadYear;
+      case 1: return l10n.worstYear;
+      default: return '';
+    }
+  }
+
+  Color _getScoreColor(int score) {
+    switch (score) {
+      case 7: return Colors.green[900]!;
+      case 6: return Colors.green[600]!;
+      case 5: return Colors.green[300]!;
+      case 4: return Colors.white;
+      case 3: return Colors.red[200]!;
+      case 2: return Colors.red[500]!;
+      case 1: return Colors.red[900]!;
+      default: return Colors.grey;
+    }
+  }
+
   @override
+
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     
@@ -135,20 +162,77 @@ class _YearDetailDialogState extends State<YearDetailDialog> {
                   children: [
                     // Score
                     Text("Evaluation", style: Theme.of(context).textTheme.titleMedium),
-                    Wrap(
-                      spacing: 8,
+                    Column(
                       children: List.generate(7, (index) {
-                        final score = index + 1;
+                        // Display 7 (Best) at top, 1 (Worst) at bottom.
+                        // index 0 -> score 7
+                        // index 6 -> score 1
+                        final score = 7 - index;
                         final isSelected = _score == score;
-                        return ChoiceChip(
-                          label: Text('$score'),
-                          selected: isSelected,
-                          onSelected: (selected) {
+                        final scoreColor = _getScoreColor(score);
+                        // Determine text color based on background darkness roughly
+                        final isDarkBg = score == 7 || score == 6 || score == 1 || score == 2;
+                        final textColor = isDarkBg ? Colors.white : Colors.black;
+                        
+                        return InkWell(
+                          onTap: () {
                             setState(() {
-                              _score = selected ? score : null;
+                               _score = score;
                             });
                           },
-                          // Add color/tooltip for meaning
+                          child: Container(
+                            margin: const EdgeInsets.symmetric(vertical: 4),
+                            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                            decoration: BoxDecoration(
+                              color: scoreColor.withOpacity(isSelected ? 1.0 : 0.6), // Full opacity if selected, slightly transparent if not? 
+                              // User said "background color... to know the color". 
+                              // If we use full color, it might be too heavy. 
+                              // But let's try to stick to the requirement "background color matching typical color".
+                              // Let's use opacity for unselected state to show it's 'inactive' or maybe selection border is enough?
+                              // Let's keep color consistent but maybe add border or shadow for selection.
+                              // Actually, having 7 big colored blocks might be overwhelming. 
+                              // Let's try full color but maybe slightly lighter?
+                              // Let's use the exact color as requested, but maybe dim unselected ones?
+                              // Or simply: Color is the background. Selected has a thick border.
+                              
+                              borderRadius: BorderRadius.circular(8),
+                              boxShadow: isSelected ? [BoxShadow(color: Colors.black26, blurRadius: 4, offset: Offset(0, 2))] : null,
+                              border: isSelected ? Border.all(color: Colors.black, width: 2) : Border.all(color: Colors.grey[300]!)
+                            ),
+                            child: Row(
+                              children: [
+                                Container(
+                                  width: 32,
+                                  height: 32,
+                                  alignment: Alignment.center,
+                                  decoration: BoxDecoration(
+                                    color: Colors.white.withOpacity(0.3), // Light circle behind number
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: Text(
+                                    '$score',
+                                    style: TextStyle(
+                                      color: textColor,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(width: 16),
+                                Expanded(
+                                  child: Text(
+                                    _getScoreDescription(score, l10n),
+                                    style: TextStyle(
+                                        fontSize: 16, 
+                                        color: textColor,
+                                        fontWeight: FontWeight.w500
+                                    ),
+                                  ),
+                                ),
+                                if (isSelected)
+                                  Icon(Icons.check_circle, color: isDarkBg ? Colors.white : Colors.black),
+                              ],
+                            ),
+                          ),
                         );
                       }),
                     ),
