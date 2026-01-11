@@ -42,4 +42,20 @@ class StorageService {
       await file.delete();
     }
   }
+
+  Future<void> exportData(String path, LifeData data) async {
+    final file = File(path);
+    final jsonString = jsonEncode(data.toJson());
+    await file.writeAsString(jsonString);
+  }
+
+  Future<LifeData> importData(String path) async {
+    final file = File(path);
+    if (!await file.exists()) {
+      throw Exception('File not found');
+    }
+    final jsonString = await file.readAsString();
+    final jsonMap = jsonDecode(jsonString) as Map<String, dynamic>;
+    return LifeData.fromJson(jsonMap); // This might throw format exception
+  }
 }

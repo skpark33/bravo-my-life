@@ -32,5 +32,10 @@
   "resetDataSubtitle": "모든 데이터를 삭제하고 초기화합니다.",
   "resetDataWarning": "정말로 모든 데이터를 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.",
   "evaluation": "평가",
-  "events": "이벤트"
+  "events": "이벤트",
+  "backupData": "데이터 백업",
+  "restoreData": "데이터 복원",
+  "exportSuccess": "데이터가 성공적으로 내보내졌습니다.",
+  "importSuccess": "데이터를 성공적으로 가져왔습니다.",
+  "error": "오류"
 }

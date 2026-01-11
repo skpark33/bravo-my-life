@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../providers/life_data_provider.dart';
 import '../providers/locale_provider.dart';
+import 'package:file_picker/file_picker.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -63,6 +64,56 @@ class SettingsScreen extends StatelessWidget {
                 );
               },
             ),
+          ),
+          const Divider(),
+          ListTile(
+            title: Text(l10n.backupData),
+            leading: const Icon(Icons.download),
+            onTap: () async {
+              try {
+                String? outputFile = await FilePicker.platform.saveFile(
+                  dialogTitle: l10n.backupData,
+                  fileName: 'bravo_my_life_backup.json',
+                  allowedExtensions: ['json'],
+                  type: FileType.custom,
+                );
+                
+                if (outputFile != null) {
+                   await context.read<LifeDataProvider>().exportData(outputFile);
+                   if (context.mounted) {
+                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l10n.exportSuccess)));
+                   }
+                }
+              } catch (e) {
+                if (context.mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('${l10n.error}: $e')));
+                }
+              }
+            },
+          ),
+          ListTile(
+            title: Text(l10n.restoreData),
+            leading: const Icon(Icons.upload),
+            onTap: () async {
+               try {
+                 FilePickerResult? result = await FilePicker.platform.pickFiles(
+                   dialogTitle: l10n.restoreData,
+                   type: FileType.custom,
+                   allowedExtensions: ['json'],
+                 );
+
+                 if (result != null && result.files.single.path != null) {
+                   await context.read<LifeDataProvider>().importData(result.files.single.path!);
+                   if (context.mounted) {
+                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l10n.importSuccess)));
+                   }
+                 }
+               } catch (e) {
+                 if (context.mounted) {
+                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('${l10n.error}: $e')));
+                 }
+               }
+            },
           ),
           const Divider(),
           ListTile(

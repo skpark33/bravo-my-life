@@ -32,5 +32,10 @@
   "resetDataSubtitle": "Reset all data and start over.",
   "resetDataWarning": "Are you sure you want to delete all data? This cannot be undone.",
   "evaluation": "Evaluation",
-  "events": "Events"
+  "events": "Events",
+  "backupData": "Backup Data",
+  "restoreData": "Restore Data",
+  "exportSuccess": "Data exported successfully.",
+  "importSuccess": "Data imported successfully.",
+  "error": "Error"
 }

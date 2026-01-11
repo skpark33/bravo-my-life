@@ -32,5 +32,10 @@
   "resetDataSubtitle": "すべてのデータを削除して初期化します。",
   "resetDataWarning": "本当にすべてのデータを削除しますか？この操作は取り消せません。",
   "evaluation": "評価",
-  "events": "イベント"
+  "events": "イベント",
+  "backupData": "データバックアップ",
+  "restoreData": "データ復元",
+  "exportSuccess": "データが正常にエクスポートされました。",
+  "importSuccess": "データが正常にインポートされました。",
+  "error": "エラー"
 }

@@ -127,4 +127,23 @@ class LifeDataProvider with ChangeNotifier {
     await _storageService.saveData(_lifeData!);
     notifyListeners();
   }
+
+  Future<void> exportData(String path) async {
+    if (_lifeData == null) return;
+    await _storageService.exportData(path, _lifeData!);
+  }
+
+  Future<void> importData(String path) async {
+    _isLoading = true;
+    notifyListeners();
+    try {
+      final newData = await _storageService.importData(path);
+      // Validate or sanitize if needed
+      _lifeData = newData;
+      await _storageService.saveData(_lifeData!); // Save to local storage
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
 }

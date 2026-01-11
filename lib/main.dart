@@ -42,6 +42,7 @@ class MyApp extends StatelessWidget {
         builder: (context, localeProvider, child) {
           return MaterialApp(
             title: 'Bravo My Life',
+            debugShowCheckedModeBanner: false,
             theme: ThemeData(
               colorScheme: ColorScheme.fromSeed(seedColor: Colors.teal),
               useMaterial3: true,

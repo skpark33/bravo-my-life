@@ -44,6 +44,8 @@ dependencies:
   fl_chart: ^0.68.0
   image_picker: ^1.1.2
   window_manager: ^0.3.9
+  file_picker: ^10.3.8
+  share_plus: ^12.0.1
 
 dev_dependencies:
   flutter_test:
