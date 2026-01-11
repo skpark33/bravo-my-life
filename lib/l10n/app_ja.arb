@@ -30,5 +30,7 @@
   "dataManagement": "データ管理",
   "resetData": "データ初期化",
   "resetDataSubtitle": "すべてのデータを削除して初期化します。",
-  "resetDataWarning": "本当にすべてのデータを削除しますか？この操作は取り消せません。"
+  "resetDataWarning": "本当にすべてのデータを削除しますか？この操作は取り消せません。",
+  "evaluation": "評価",
+  "events": "イベント"
 }

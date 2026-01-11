@@ -222,7 +222,7 @@ class _YearDetailDialogState extends State<YearDetailDialog> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // Score
-                    Text("Evaluation", style: Theme.of(context).textTheme.titleMedium),
+                    Text(l10n.evaluation, style: Theme.of(context).textTheme.titleMedium),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -260,54 +260,78 @@ class _YearDetailDialogState extends State<YearDetailDialog> {
                     ),
                     const SizedBox(height: 24),
                     
-                    // Photo
-                    Text(l10n.selectPhoto, style: Theme.of(context).textTheme.titleMedium),
-                    const SizedBox(height: 8),
-                    GestureDetector(
-                      onTap: _pickImage,
-                      child: Container(
-                        height: 200,
-                        width: double.infinity,
-                        color: Colors.grey[200],
-                        child: _photoPath != null
-                          ? Image.file(File(_photoPath!), fit: BoxFit.cover)
-                          : const Icon(Icons.add_a_photo, size: 50, color: Colors.grey),
-                      ),
-                    ),
-                     const SizedBox(height: 24),
-
-                    // Events
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text("Events", style: Theme.of(context).textTheme.titleMedium),
-                        IconButton(icon: const Icon(Icons.add), onPressed: _addEvent),
-                      ],
-                    ),
-                    ListView.builder(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: _events.length,
-                      itemBuilder: (context, index) {
-                        final event = _events[index];
-                        return ListTile(
-                          title: Text(event.title),
-                          subtitle: Text(event.description),
-                          trailing: Row(
-                            mainAxisSize: MainAxisSize.min,
+                        // Left: Events
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
-                              IconButton(
-                                icon: const Icon(Icons.edit, size: 18),
-                                onPressed: () => _editEvent(event),
-                              ),
-                              IconButton(
-                                icon: const Icon(Icons.delete, size: 18),
-                                onPressed: () => _deleteEvent(event.id),
-                              ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(l10n.events, style: Theme.of(context).textTheme.titleMedium),
+                                    IconButton(icon: const Icon(Icons.add), onPressed: _addEvent),
+                                  ],
+                                ),
+                                ListView.builder(
+                                  shrinkWrap: true,
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  itemCount: _events.length,
+                                  itemBuilder: (context, index) {
+                                    final event = _events[index];
+                                    return ListTile(
+                                      title: Text(event.title),
+                                      subtitle: Text(event.description),
+                                      trailing: Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          IconButton(
+                                            icon: const Icon(Icons.edit, size: 18),
+                                            onPressed: () => _editEvent(event),
+                                          ),
+                                          IconButton(
+                                            icon: const Icon(Icons.delete, size: 18),
+                                            onPressed: () => _deleteEvent(event.id),
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                                  },
+                                ),
                             ],
                           ),
-                        );
-                      },
+                        ),
+                        const SizedBox(width: 16),
+                        // Right: Photo
+                        Expanded(
+                          child: Column(
+                            children: [
+                                Text(l10n.selectPhoto, style: Theme.of(context).textTheme.titleMedium),
+                                const SizedBox(height: 8),
+                                AspectRatio(
+                                  aspectRatio: 3 / 4,
+                                  child: GestureDetector(
+                                    onTap: _pickImage,
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        color: Colors.grey[200],
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
+                                      child: _photoPath != null
+                                        ? ClipRRect(
+                                            borderRadius: BorderRadius.circular(8),
+                                            child: Image.file(File(_photoPath!), fit: BoxFit.cover),
+                                          )
+                                        : const Icon(Icons.add_a_photo, size: 50, color: Colors.grey),
+                                    ),
+                                  ),
+                                ),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),

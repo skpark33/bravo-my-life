@@ -30,5 +30,7 @@
   "dataManagement": "데이터 관리",
   "resetData": "데이터 초기화",
   "resetDataSubtitle": "모든 데이터를 삭제하고 초기화합니다.",
-  "resetDataWarning": "정말로 모든 데이터를 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다."
+  "resetDataWarning": "정말로 모든 데이터를 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.",
+  "evaluation": "평가",
+  "events": "이벤트"
 }

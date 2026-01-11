@@ -30,5 +30,7 @@
   "dataManagement": "Data Management",
   "resetData": "Reset Data",
   "resetDataSubtitle": "Reset all data and start over.",
-  "resetDataWarning": "Are you sure you want to delete all data? This cannot be undone."
+  "resetDataWarning": "Are you sure you want to delete all data? This cannot be undone.",
+  "evaluation": "Evaluation",
+  "events": "Events"
 }
