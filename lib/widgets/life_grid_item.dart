@@ -74,7 +74,9 @@ class LifeGridItem extends StatelessWidget {
           color: bgColor,
           border: isCurrentYear 
               ? Border.all(color: Colors.blue[700]!, width: 3) 
-              : Border.all(color: Colors.grey[300]!),
+              : isSamjaeColumn 
+                  ? Border.all(color: Colors.amber[700]!, width: 2) // Dark yellow, slightly thicker than hairline
+                  : Border.all(color: Colors.grey[300]!),
         ),
         padding: const EdgeInsets.all(2),
         child: Column(
@@ -109,12 +111,12 @@ class LifeGridItem extends StatelessWidget {
                if (Platform.isWindows)
                  Text(
                    lifeYear!.events.first.title,
-                   style: TextStyle(fontSize: 14, color: Colors.blue[800]),
+                   style: TextStyle(fontSize: 14, color: textColor), // Match Year Color
                    overflow: TextOverflow.ellipsis,
                    maxLines: 1,
                  )
                else
-                 const Icon(Icons.event, size: 12, color: Colors.blue),
+                 Icon(Icons.event, size: 12, color: textColor), // Also match icon color for consistency
           ],
         ),
       ),
