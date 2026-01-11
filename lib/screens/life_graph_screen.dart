@@ -46,6 +46,47 @@ class LifeGraphScreen extends StatelessWidget {
                         maxX: minYear + 100.0,
                         minY: 1,
                         maxY: 7,
+                        lineTouchData: LineTouchData(
+                          enabled: false, // Disable touch interaction to just show permanent labels
+                          touchTooltipData: LineTouchTooltipData(
+                             getTooltipColor: (touchedSpot) => Colors.transparent,
+                             tooltipPadding: EdgeInsets.zero,
+                             tooltipMargin: 4,
+                             getTooltipItems: (touchedSpots) {
+                               return touchedSpots.map((spot) {
+                                 final year = spot.x.toInt();
+                                 final yearData = lifeData.years[year];
+                                 if (yearData != null && yearData.events.isNotEmpty) {
+                                   String title = yearData.events.first.title;
+                                   
+                                   final isEven = year % 2 == 0;
+                                   if (isEven) {
+                                     // Add significant spacing to push the label much higher
+                                     // Using spaces to ensure lines aren't trimmed
+                                     title = "$title\n \n \n \n \n \n \n ";
+                                   }
+                                   
+                                   return LineTooltipItem(
+                                     title,
+                                     const TextStyle(color: Colors.black, fontSize: 10, fontWeight: FontWeight.bold),
+                                   );
+                                 }
+                                 return null;
+                               }).toList();
+                             },
+                          ),
+                        ),
+                        showingTooltipIndicators: spots.where((spot) {
+                          final year = spot.x.toInt();
+                          final yearData = lifeData.years[year];
+                          return yearData != null && yearData.events.isNotEmpty;
+                        }).map((spot) => ShowingTooltipIndicators([
+                          LineBarSpot(
+                            LineChartBarData(spots: spots),
+                            spots.indexOf(spot),
+                            spot,
+                          ),
+                        ])).toList(),
                         lineBarsData: [
                           LineChartBarData(
                             spots: spots,
