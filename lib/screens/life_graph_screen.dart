@@ -36,55 +36,62 @@ class LifeGraphScreen extends StatelessWidget {
         padding: const EdgeInsets.all(24.0),
         child: spots.isEmpty
             ? Center(child: Text("No rated years yet."))
-            : LineChart(
-                LineChartData(
-                  minX: lifeData.birthYear.toDouble(),
-                  maxX: minYear + 100.0,
-                  minY: 1,
-                  maxY: 7,
-                  lineBarsData: [
-                    LineChartBarData(
-                      spots: spots,
-                      isCurved: true,
-                      color: Colors.blue,
-                      barWidth: 3,
-                      dotData: FlDotData(show: true),
-                      belowBarData: BarAreaData(
-                        show: true, 
-                        color: Colors.blue.withOpacity(0.1)
+            : LayoutBuilder(
+                builder: (context, constraints) {
+                  return SizedBox(
+                    height: constraints.maxHeight * 0.5,
+                    child: LineChart(
+                      LineChartData(
+                        minX: lifeData.birthYear.toDouble(),
+                        maxX: minYear + 100.0,
+                        minY: 1,
+                        maxY: 7,
+                        lineBarsData: [
+                          LineChartBarData(
+                            spots: spots,
+                            isCurved: true,
+                            color: Colors.blue,
+                            barWidth: 3,
+                            dotData: FlDotData(show: true),
+                            belowBarData: BarAreaData(
+                              show: true, 
+                              color: Colors.blue.withOpacity(0.1)
+                            ),
+                          ),
+                        ],
+                        titlesData: FlTitlesData(
+                          bottomTitles: AxisTitles(
+                            sideTitles: SideTitles(
+                              showTitles: true,
+                              interval: 10, // Every 10 years
+                              getTitlesWidget: (value, meta) {
+                                return Padding(
+                                  padding: const EdgeInsets.only(top: 8.0),
+                                  child: Text(value.toInt().toString()),
+                                );
+                              },
+                            ),
+                          ),
+                          leftTitles: AxisTitles(
+                            sideTitles: SideTitles(
+                              showTitles: true,
+                              interval: 1,
+                              getTitlesWidget: (value, meta) {
+                                // Value is directly expectation score
+                                int score = value.toInt();
+                                return Text(score.toString());
+                              },
+                            ),
+                          ),
+                          topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                          rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                        ),
+                        gridData: FlGridData(show: true),
+                        borderData: FlBorderData(show: true),
                       ),
                     ),
-                  ],
-                  titlesData: FlTitlesData(
-                    bottomTitles: AxisTitles(
-                      sideTitles: SideTitles(
-                        showTitles: true,
-                        interval: 10, // Every 10 years
-                        getTitlesWidget: (value, meta) {
-                          return Padding(
-                            padding: const EdgeInsets.only(top: 8.0),
-                            child: Text(value.toInt().toString()),
-                          );
-                        },
-                      ),
-                    ),
-                    leftTitles: AxisTitles(
-                      sideTitles: SideTitles(
-                        showTitles: true,
-                        interval: 1,
-                        getTitlesWidget: (value, meta) {
-                          // Value is directly expectation score
-                          int score = value.toInt();
-                          return Text(score.toString());
-                        },
-                      ),
-                    ),
-                    topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                    rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                  ),
-                  gridData: FlGridData(show: true),
-                  borderData: FlBorderData(show: true),
-                ),
+                  );
+                },
               ),
       ),
     );

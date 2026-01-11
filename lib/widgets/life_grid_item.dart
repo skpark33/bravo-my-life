@@ -109,14 +109,17 @@ class LifeGridItem extends StatelessWidget {
              else if (hasEvents)
                // On Windows, show event title text
                if (Platform.isWindows)
-                 Text(
-                   lifeYear!.events.first.title,
-                   style: TextStyle(fontSize: 14, color: textColor), // Match Year Color
-                   overflow: TextOverflow.ellipsis,
-                   maxLines: 1,
-                 )
+                 ...lifeYear!.events.take(3).map((event) => Padding(
+                   padding: const EdgeInsets.only(bottom: 2.0),
+                   child: Text(
+                     event.title,
+                     style: TextStyle(fontSize: 14, color: textColor), // Match Year Color
+                     overflow: TextOverflow.ellipsis,
+                     maxLines: 1,
+                   ),
+                 ))
                else
-                 Icon(Icons.event, size: 12, color: textColor), // Also match icon color for consistency
+                 ...[Icon(Icons.event, size: 12, color: textColor)], // Also match icon color for consistency
           ],
         ),
       ),
