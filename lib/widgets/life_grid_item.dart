@@ -55,6 +55,8 @@ class LifeGridItem extends StatelessWidget {
     final textColor = _getTextColor();
     final hasEvents = lifeYear?.events.isNotEmpty ?? false;
 
+    final isCurrentYear = year == DateTime.now().year;
+
     return InkWell(
       onTap: () {
         // Show dialog
@@ -70,7 +72,9 @@ class LifeGridItem extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           color: bgColor,
-          border: Border.all(color: Colors.grey[300]!),
+          border: isCurrentYear 
+              ? Border.all(color: Colors.blue[700]!, width: 3) 
+              : Border.all(color: Colors.grey[300]!),
         ),
         padding: const EdgeInsets.all(2),
         child: Column(
@@ -80,7 +84,7 @@ class LifeGridItem extends StatelessWidget {
             Text(
               '$year',
               style: TextStyle(
-                fontSize: 10, 
+                fontSize: 18, 
                 fontWeight: FontWeight.bold,
                 color: textColor,
               ),
@@ -90,7 +94,7 @@ class LifeGridItem extends StatelessWidget {
             Text(
               '($age)',
               style: TextStyle(
-                fontSize: 8,
+                fontSize: 14,
                 color: textColor.withOpacity(0.8),
               ),
             ),
@@ -105,7 +109,7 @@ class LifeGridItem extends StatelessWidget {
                if (Platform.isWindows)
                  Text(
                    lifeYear!.events.first.title,
-                   style: TextStyle(fontSize: 8, color: Colors.blue[800]),
+                   style: TextStyle(fontSize: 14, color: Colors.blue[800]),
                    overflow: TextOverflow.ellipsis,
                    maxLines: 1,
                  )
