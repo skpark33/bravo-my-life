@@ -133,6 +133,67 @@ class _YearDetailDialogState extends State<YearDetailDialog> {
     }
   }
 
+  Widget _buildScoreItem(int score, AppLocalizations l10n) {
+    final isSelected = _score == score;
+    final scoreColor = _getScoreColor(score);
+    final isDarkBg = score == 7 || score == 6 || score == 1 || score == 2;
+    final textColor = isDarkBg ? Colors.white : Colors.black;
+
+    return InkWell(
+      onTap: () {
+        setState(() {
+            _score = score;
+        });
+      },
+      child: Container(
+        height: 48, // Fixed height for uniformity and compactness
+        margin: const EdgeInsets.symmetric(vertical: 4),
+        padding: const EdgeInsets.symmetric(horizontal: 8),
+        decoration: BoxDecoration(
+          color: scoreColor.withOpacity(isSelected ? 1.0 : 0.6),
+          borderRadius: BorderRadius.circular(8),
+          boxShadow: isSelected ? [const BoxShadow(color: Colors.black26, blurRadius: 4, offset: Offset(0, 2))] : null,
+          border: isSelected ? Border.all(color: Colors.black, width: 2) : Border.all(color: Colors.grey[300]!)
+        ),
+        child: Row(
+           children: [
+             Container(
+               width: 24, 
+               height: 24,
+               alignment: Alignment.center,
+               decoration: BoxDecoration(
+                 color: Colors.white.withOpacity(0.3),
+                 shape: BoxShape.circle,
+               ),
+               child: Text(
+                 '$score',
+                 style: TextStyle(
+                   color: textColor,
+                   fontSize: 12,
+                   fontWeight: FontWeight.bold,
+                 ),
+               ),
+             ),
+             const SizedBox(width: 8),
+             Expanded(
+               child: Text(
+                 _getScoreDescription(score, l10n),
+                 style: TextStyle(
+                     fontSize: 12,
+                     color: textColor,
+                     fontWeight: FontWeight.w500
+                 ),
+                 overflow: TextOverflow.ellipsis, // Ensure it doesn't break layout
+               ),
+             ),
+             if (isSelected) 
+                 Icon(Icons.check_circle, size: 16, color: isDarkBg ? Colors.white : Colors.black),
+           ],
+        ),
+      ),
+    );
+  }
+
   @override
 
   Widget build(BuildContext context) {
@@ -162,79 +223,40 @@ class _YearDetailDialogState extends State<YearDetailDialog> {
                   children: [
                     // Score
                     Text("Evaluation", style: Theme.of(context).textTheme.titleMedium),
-                    Column(
-                      children: List.generate(7, (index) {
-                        // Display 7 (Best) at top, 1 (Worst) at bottom.
-                        // index 0 -> score 7
-                        // index 6 -> score 1
-                        final score = 7 - index;
-                        final isSelected = _score == score;
-                        final scoreColor = _getScoreColor(score);
-                        // Determine text color based on background darkness roughly
-                        final isDarkBg = score == 7 || score == 6 || score == 1 || score == 2;
-                        final textColor = isDarkBg ? Colors.white : Colors.black;
-                        
-                        return InkWell(
-                          onTap: () {
-                            setState(() {
-                               _score = score;
-                            });
-                          },
-                          child: Container(
-                            margin: const EdgeInsets.symmetric(vertical: 4),
-                            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                            decoration: BoxDecoration(
-                              color: scoreColor.withOpacity(isSelected ? 1.0 : 0.6), // Full opacity if selected, slightly transparent if not? 
-                              // User said "background color... to know the color". 
-                              // If we use full color, it might be too heavy. 
-                              // But let's try to stick to the requirement "background color matching typical color".
-                              // Let's use opacity for unselected state to show it's 'inactive' or maybe selection border is enough?
-                              // Let's keep color consistent but maybe add border or shadow for selection.
-                              // Actually, having 7 big colored blocks might be overwhelming. 
-                              // Let's try full color but maybe slightly lighter?
-                              // Let's use the exact color as requested, but maybe dim unselected ones?
-                              // Or simply: Color is the background. Selected has a thick border.
-                              
-                              borderRadius: BorderRadius.circular(8),
-                              boxShadow: isSelected ? [BoxShadow(color: Colors.black26, blurRadius: 4, offset: Offset(0, 2))] : null,
-                              border: isSelected ? Border.all(color: Colors.black, width: 2) : Border.all(color: Colors.grey[300]!)
-                            ),
-                            child: Row(
-                              children: [
-                                Container(
-                                  width: 32,
-                                  height: 32,
-                                  alignment: Alignment.center,
-                                  decoration: BoxDecoration(
-                                    color: Colors.white.withOpacity(0.3), // Light circle behind number
-                                    shape: BoxShape.circle,
-                                  ),
-                                  child: Text(
-                                    '$score',
-                                    style: TextStyle(
-                                      color: textColor,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox(width: 16),
-                                Expanded(
-                                  child: Text(
-                                    _getScoreDescription(score, l10n),
-                                    style: TextStyle(
-                                        fontSize: 16, 
-                                        color: textColor,
-                                        fontWeight: FontWeight.w500
-                                    ),
-                                  ),
-                                ),
-                                if (isSelected)
-                                  Icon(Icons.check_circle, color: isDarkBg ? Colors.white : Colors.black),
-                              ],
-                            ),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          child: Column(
+                            children: [
+                              _buildScoreItem(7, l10n),
+                              _buildScoreItem(6, l10n),
+                              _buildScoreItem(5, l10n),
+                            ],
                           ),
-                        );
-                      }),
+                        ),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: Column(
+                            children: [
+                              // Alignment spacer to put 4 in the middle (same Y as 6 and 2)
+                              // Item height 48 + vertical margin 8 = 56
+                              const SizedBox(height: 56), 
+                              _buildScoreItem(4, l10n),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: Column(
+                            children: [
+                              _buildScoreItem(3, l10n),
+                              _buildScoreItem(2, l10n),
+                              _buildScoreItem(1, l10n),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
                     const SizedBox(height: 24),
                     
