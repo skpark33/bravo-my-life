@@ -26,5 +26,9 @@
   "eventDescription": "内容",
   "selectPhoto": "写真選択",
   "lifeGraph": "人生曲線",
-  "language": "言語"
+  "language": "言語",
+  "dataManagement": "データ管理",
+  "resetData": "データ初期化",
+  "resetDataSubtitle": "すべてのデータを削除して初期化します。",
+  "resetDataWarning": "本当にすべてのデータを削除しますか？この操作は取り消せません。"
 }

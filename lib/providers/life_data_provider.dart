@@ -101,4 +101,30 @@ class LifeDataProvider with ChangeNotifier {
     await _storageService.deleteData();
     notifyListeners();
   }
+  
+  Future<void> changeBirthYear(int newBirthYear) async {
+    if (_lifeData == null) {
+      await createNewData(newBirthYear);
+      return;
+    }
+    
+    // Create new data map
+    Map<int, LifeYear> newYears = {};
+    for (int i = 0; i <= 100; i++) {
+        int y = newBirthYear + i;
+        // Preserve existing data if available
+        if (_lifeData!.years.containsKey(y)) {
+            newYears[y] = _lifeData!.years[y]!;
+        } else {
+            newYears[y] = LifeYear(year: y);
+        }
+    }
+    
+    // Update data object
+    _lifeData!.birthYear = newBirthYear;
+    _lifeData!.years = newYears;
+    
+    await _storageService.saveData(_lifeData!);
+    notifyListeners();
+  }
 }
