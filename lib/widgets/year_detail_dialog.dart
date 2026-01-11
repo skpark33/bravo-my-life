@@ -125,7 +125,7 @@ class _YearDetailDialogState extends State<YearDetailDialog> {
       case 7: return Colors.green[900]!;
       case 6: return Colors.green[600]!;
       case 5: return Colors.green[300]!;
-      case 4: return Colors.white;
+      case 4: return Colors.purple[100]!;
       case 3: return Colors.red[200]!;
       case 2: return Colors.red[500]!;
       case 1: return Colors.red[900]!;
@@ -312,20 +312,46 @@ class _YearDetailDialogState extends State<YearDetailDialog> {
                                 const SizedBox(height: 8),
                                 AspectRatio(
                                   aspectRatio: 3 / 4,
-                                  child: GestureDetector(
-                                    onTap: _pickImage,
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        color: Colors.grey[200],
-                                        borderRadius: BorderRadius.circular(8),
-                                      ),
-                                      child: _photoPath != null
-                                        ? ClipRRect(
+                                  child: Stack(
+                                    children: [
+                                      GestureDetector(
+                                        onTap: _pickImage,
+                                        child: Container(
+                                          width: double.infinity, 
+                                          height: double.infinity,
+                                          decoration: BoxDecoration(
+                                            color: Colors.grey[200],
                                             borderRadius: BorderRadius.circular(8),
-                                            child: Image.file(File(_photoPath!), fit: BoxFit.cover),
-                                          )
-                                        : const Icon(Icons.add_a_photo, size: 50, color: Colors.grey),
-                                    ),
+                                          ),
+                                          child: _photoPath != null
+                                            ? ClipRRect(
+                                                borderRadius: BorderRadius.circular(8),
+                                                child: Image.file(File(_photoPath!), fit: BoxFit.cover),
+                                              )
+                                            : const Icon(Icons.add_a_photo, size: 50, color: Colors.grey),
+                                        ),
+                                      ),
+                                      if (_photoPath != null)
+                                        Positioned(
+                                          top: 4,
+                                          right: 4,
+                                          child: InkWell(
+                                            onTap: () {
+                                              setState(() {
+                                                _photoPath = null;
+                                              });
+                                            },
+                                            child: Container(
+                                              padding: const EdgeInsets.all(4),
+                                              decoration: const BoxDecoration(
+                                                color: Colors.black54,
+                                                shape: BoxShape.circle,
+                                              ),
+                                              child: const Icon(Icons.close, color: Colors.white, size: 20),
+                                            ),
+                                          ),
+                                        ),
+                                    ],
                                   ),
                                 ),
                             ],

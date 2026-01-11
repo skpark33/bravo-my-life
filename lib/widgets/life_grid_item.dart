@@ -24,7 +24,7 @@ class LifeGridItem extends StatelessWidget {
         case 7: return Colors.green[900]!;
         case 6: return Colors.green[600]!;
         case 5: return Colors.green[300]!;
-        case 4: return Colors.white;
+        case 4: return Colors.purple[100]!;
         case 3: return Colors.red[200]!;
         case 2: return Colors.red[500]!;
         case 1: return Colors.red[900]!;
@@ -101,7 +101,16 @@ class LifeGridItem extends StatelessWidget {
                  child: dynamicWrapper(),
                )
              else if (hasEvents)
-               const Icon(Icons.event, size: 12, color: Colors.blue),
+               // On Windows, show event title text
+               if (Platform.isWindows)
+                 Text(
+                   lifeYear!.events.first.title,
+                   style: TextStyle(fontSize: 8, color: Colors.blue[800]),
+                   overflow: TextOverflow.ellipsis,
+                   maxLines: 1,
+                 )
+               else
+                 const Icon(Icons.event, size: 12, color: Colors.blue),
           ],
         ),
       ),
